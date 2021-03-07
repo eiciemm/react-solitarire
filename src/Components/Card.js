@@ -42,11 +42,6 @@ class Card extends Component {
   constructor(props) {
     super(props);
   }
-  componentDidUpdate(prevProps) {
-    // if (this.props.card !== prevProps.card) {
-    //   console.log('card comp update')
-    // }
-  }
   render() {
     const { isDragging, connectDragSource, card, index } = this.props;
     const opacity = isDragging ? 0 : 1;
