@@ -14,7 +14,11 @@ const CardImage = styled.img`
 
 const itemSource = {
   beginDrag(props) {
-    return {card: props.card, parentIndex: props.parentIndex};
+    return {
+      card: props.card,
+      parentIndex: props.parentIndex,
+      isFromFoundation: props.isFromFoundation
+    };
   },
   canDrag(props) {
     if(!props.card.face) {
@@ -23,11 +27,12 @@ const itemSource = {
       return true
     }
   }
-//   endDrag(props, monitor, component) {
-//     if (!monitor.didDrop()) {
-//       return;
-//     }
-//   }
+  // isDragging(monitor) {},
+  // endDrag(props, monitor, component) {
+  //   if (!monitor.didDrop()) {
+  //     return;
+  //   }
+  // }
 }
 
 function collect(connect, monitor) {

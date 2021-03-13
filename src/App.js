@@ -2,19 +2,26 @@ import React from 'react';
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import { DndProvider } from 'react-dnd'
 import styled from 'styled-components';
-import Columns from './Components/Columns';
 import Stocks from './Components/Stocks';
+import Foundations from './Components/Foundations';
+import Columns from './Components/Columns';
 
-const Wrapper = styled.div`
-  width: 100vw;
-  height: 100vh;
+const Wrapper = styled.div``;
+
+const UpperArea = styled.div`
+  width: 945px;
+  display: flex;
+  justify-content: space-between;
 `;
 
 const App = () => {
   return (
     <DndProvider backend={HTML5Backend}>
       <Wrapper>
-        <Stocks />
+        <UpperArea>
+          <Stocks />
+          <Foundations />
+        </UpperArea>
         <Columns />
       </Wrapper>
     </DndProvider>

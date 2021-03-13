@@ -5,7 +5,9 @@ const initialState = {
   columns: [],
   stock: [],
   openedStock: [],
-  foundations: [],
+  foundations: [
+    [],[],[],[]
+  ],
   score: 0,
   moveHisotry: {
     dragCard: {},
@@ -79,20 +81,41 @@ const { Provider } = store;
 const StateProvider = ({ children }) => {
   const [state, dispatch] = useReducer((state, action) => {
     switch (action.type) {
-      case 'MOVE_COLUMN': {
-        return { ...state, columns: action.payload }
-      }
       case 'OPEN_STOCK': {
         return { ...state, openedStock: action.payload }
       }
       case 'RESET_STOCK': {
         return { ...state, stock: action.payload }
       }
-      case 'MOVE_STOCK': {
+      case 'MOVE_COLUMN_TO_COLUMN': {
+        return { ...state, columns: action.payload }
+      }
+      case 'MOVE_COLUMN_TO_FOUNDATION': {
+        return {
+          ...state,
+          columns: action.payload.newColumns,
+          foundations: action.payload.newFoundations
+        }
+      }
+      case 'MOVE_STOCK_TO_COLUMN': {
         return {
           ...state,
           columns: action.payload.newColumns,
           openedStock: action.payload.newOpenedStocks
+        }
+      }
+      case 'MOVE_STOCK_TO_FOUNDATION': {
+        return {
+          ...state,
+          openedStock: action.payload.newOpenedStocks,
+          foundations: action.payload.newFoundations
+        }
+      }
+      case 'MOVE_FOUNDATION_TO_COLUMN': {
+        return {
+          ...state,
+          columns: action.payload.newColumns,
+          foundations: action.payload.newFoundations
         }
       }
       case 'DECREMENT_COUNT': {

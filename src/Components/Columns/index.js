@@ -27,17 +27,18 @@ const Columns = () => {
     if (!checkResult) return;
 
     const isMoveFromStock = dragProps.parentIndex === undefined;
+    const isMoveFromFoundation = dragProps.isFromFoundation;
 
     if (isMoveFromStock) {
       const newData = createNewStockAndColumns(dragCard, targetIndex);
-      dispatch({ type: "MOVE_STOCK", payload: newData });
+      dispatch({ type: "MOVE_STOCK_TO_COLUMN", payload: newData });
+    } else if (isMoveFromFoundation) {
+      const newData = createNewColumnsAndFoundations(dragCard, dragProps.parentIndex, targetIndex);
+      dispatch({ type: "MOVE_FOUNDATION_TO_COLUMN", payload: newData });
     } else {
       const newData = createNewColumns(dragCard, dragProps.parentIndex, targetIndex);
-      dispatch({ type: "MOVE_COLUMN", payload: newData });
+      dispatch({ type: "MOVE_COLUMN_TO_COLUMN", payload: newData });
     }
-    //TO DO: Stock→Foundation
-    //TO DO: Columns→Foundation
-    //Columnが空の時の移動判定（13だけ許可）
   }
 
   const createNewColumns = (dragCard, fromIndex, toIndex) => {
@@ -77,6 +78,26 @@ const Columns = () => {
     return { newOpenedStocks, newColumns };
   }
 
+  const createNewColumnsAndFoundations = (dragCard, fromIndex, toIndex) => {
+    let newColumns = state.columns.map(column => {
+      return column.slice();
+    });
+    let newFoundations = state.foundations.map(foundation => {
+      return foundation.slice();
+    });
+    let fromFoundation = newFoundations[fromIndex];
+    let toColumn = newColumns[toIndex];
+
+    const dragCardIndex = fromFoundation.findIndex(card => card.id === dragCard.id);
+    fromFoundation.splice(dragCardIndex);
+
+    toColumn = [...toColumn, dragCard];
+    newColumns[toIndex] = toColumn;
+    newFoundations[fromIndex] = fromFoundation;
+
+    return { newColumns, newFoundations };
+  }
+
   const checkIsMovable = (dragCard, dropTargetCard) => {
     const acceptNumber = dropTargetCard.number - 1;
     const acceptPatterns = dropTargetCard.pattern <= 1 ? [2, 3] : [0, 1];
@@ -86,7 +107,7 @@ const Columns = () => {
     return isValidNumber && isValidPatten;
   }
 
-  const renderColumns = () => {    
+  const renderColumns = () => {
     return state.columns.map((column, index) => {
       return <SingleColumn index={index} key={index} column={column} onDrop={onDrop} />
     })
