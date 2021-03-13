@@ -44,9 +44,6 @@ function collect(connect, monitor) {
 }
 
 class Card extends Component {
-  constructor(props) {
-    super(props);
-  }
   render() {
     const { isDragging, connectDragSource, card, index } = this.props;
     const opacity = isDragging ? 0 : 1;
