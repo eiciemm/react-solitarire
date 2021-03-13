@@ -37,9 +37,6 @@ function collect(connect, monitor) {
 }
 
 class SingleColumn extends Component {
-  constructor(props) {
-    super(props);
-  }
   componentDidUpdate(prevProps) {
     const { column, index } = this.props;
     if (column !== prevProps.column) {
