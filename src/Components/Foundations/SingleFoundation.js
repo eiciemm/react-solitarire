@@ -3,22 +3,24 @@ import { DropTarget } from 'react-dnd';
 import styled from 'styled-components';
 import Card from '../Card';
 
-const Column = styled.div`
+const Foundation = styled.div`
   width: 110px;
   padding: 0 5px;
-  height: 500px;
   position: relative;
   margin-right: 15px;
 `;
 
-const ColumnFrame = styled.div`
+const FoundationFrame = styled.div`
   width: 109px;
   height: 152px;
   background: lightgray;
   border-radius: 5px;
-  position: absolute;
-  top: 0;
-  z-index: -1;
+  position: relative;
+  > div {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
 `;
 
 const itemSource = {
@@ -36,7 +38,7 @@ function collect(connect, monitor) {
   }
 }
 
-class SingleColumn extends Component {
+class SingleFoundation extends Component {
   constructor(props) {
     super(props);
   }
@@ -46,23 +48,24 @@ class SingleColumn extends Component {
       this.renderCards(column, index)
     }
   }
-  renderCards = (column, parentIndex) => {
-    return column.map((card, index) => {
-      return <Card index={index} parentIndex={parentIndex} key={card.id} card={card} />
+  renderCards = (foundation, parentIndex) => {
+    return foundation.map(card => {
+      return <Card isFromFoundation={true} parentIndex={parentIndex} key={card.id} card={card} />
     })
   }
   render() {
-    const { connectDropTarget, column, index } = this.props;
+    const { connectDropTarget, foundation, index } = this.props;
 
     return connectDropTarget(
       <div>
-        <Column index={index}>
-          {this.renderCards(column, index)}
-          <ColumnFrame />
-        </Column>
+        <Foundation index={index}>
+          <FoundationFrame>
+            {this.renderCards(foundation, index)}
+          </FoundationFrame>
+        </Foundation>
       </div>
     );
   }
 }
 
-export default DropTarget('item', itemSource, collect)(SingleColumn);
+export default DropTarget('item', itemSource, collect)(SingleFoundation);
